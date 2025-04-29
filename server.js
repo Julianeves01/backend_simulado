@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json()); // Middleware para processar JSON
 
 // Rotas
-app.use("/cosmeticos", cosmeticoRoutes);
+app.use("/api/cosmeticos", cosmeticoRoutes);
 app.use("/api/marcas", marcaRoutes); // Certifique-se de que o caminho está correto
 
 // Inicia o servidor

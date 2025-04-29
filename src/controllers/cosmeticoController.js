@@ -1,5 +1,6 @@
 const PDFDocument = require("pdfkit"); // Importação do PDFKit
 const cosmeticoModel = require('../models/cosmeticoModel');
+const { generatePdfReport } = require("./reportController");
 
 const getAllCosmeticos = async (req, res) => {
     try {
@@ -96,40 +97,43 @@ const deleteCosmetico = async (req, res) => {
     }
 };
 
-const generatePdfReport = async (req, res) => {
+const generatePdfReportForCosmeticos = async (req, res) => {
     try {
         const cosmeticos = await cosmeticoModel.getCosmeticos();
 
-        const doc = new PDFDocument();
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", "inline; filename=relatorio_cosmeticos.pdf");
+        // Tratamento dos dados para garantir que estejam no formato correto
+        const cosmeticosTratados = cosmeticos.map((item) => {
+            // Verifica se o item é uma string JSON e tenta convertê-lo
+            if (typeof item === "string") {
+                try {
+                    item = JSON.parse(item);
+                } catch (e) {
+                    console.error("Erro ao analisar item JSON:", e);
+                    item = {};
+                }
+            }
 
-        doc.pipe(res);
+            // Garante que o item seja um objeto válido e trata os campos
+            const nome = item.nome || "Não informado";
+            const preco = typeof item.preco === "number" ? item.preco : parseFloat(item.preco) || 0;
+            const marca_nome = item.marca_nome || "Não informada";
 
-        doc.fontSize(18).text("Relatório de Cosméticos", { align: "center" });
-        doc.moveDown();
-
-        cosmeticos.forEach((item, index) => {
-            doc
-                .fontSize(12)
-                .text(`${index + 1}. Nome: ${item.nome}`)
-                .text(`   Preço: R$ ${item.preco.toFixed(2)}`)
-                .text(`   Marca: ${item.marca_nome || "Não informada"}`)
-                .moveDown();
+            return { nome, preco, marca_nome };
         });
 
-        doc.end();
+        // Gera o relatório com os dados tratados
+        generatePdfReport(res, cosmeticosTratados, "Relatório de Cosméticos");
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao gerar relatório PDF:", error);
         res.status(500).json({ message: "Erro ao gerar relatório PDF." });
     }
 };
 
-module.exports = { 
-    getAllCosmeticos, 
-    getCosmetico, 
-    createCosmetico, 
-    updateCosmetico, 
-    deleteCosmetico, 
-    generatePdfReport // Adicionando a função ao export
+module.exports = {
+    getAllCosmeticos,
+    getCosmetico,
+    createCosmetico,
+    updateCosmetico,
+    deleteCosmetico,
+    generatePdfReport: generatePdfReportForCosmeticos
 };

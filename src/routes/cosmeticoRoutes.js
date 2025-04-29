@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/cosmeticoController");
 const apiKey = require("../middleware/apiKey");
+
 router.use(apiKey); // Middleware para verificar a chave da API
 
 router.get("/", controller.getAllCosmeticos);
