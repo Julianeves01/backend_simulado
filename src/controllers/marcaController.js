@@ -2,18 +2,18 @@ const marcaModel = require("../models/marcaModel");
 
 const createMarca = async (req, res) => {
         try {
-                console.log("Dados recebidos:", req.body); // Log para depuração
+                console.log("Dados recebidos:", req.body);
                 const { nome, pais_origem } = req.body;
 
-                // Validação básica
+                
                 if (!nome || !pais_origem) {
                         return res.status(400).json({ error: "Todos os campos são obrigatórios." });
                 }
 
-                // Criação da marca
+        
                 const novaMarca = await marcaModel.createMarca({ nome, pais_origem });
 
-                // Retorna mensagem de sucesso e a marca criada
+                
                 res.status(201).json({
                         message: "Marca criada com sucesso!",
                         marca: novaMarca
@@ -55,12 +55,12 @@ const updateMarca = async (req, res) => {
                 const { id } = req.params;
                 const { nome, pais_origem } = req.body;
 
-                // Validação básica
+                
                 if (!nome || !pais_origem) {
                         return res.status(400).json({ error: "Todos os campos são obrigatórios." });
                 }
 
-                // Atualização da marca
+                
                 const marcaAtualizada = await marcaModel.updateMarca(id, { nome, pais_origem });
 
                 if (!marcaAtualizada) {
@@ -81,7 +81,7 @@ const deleteMarca = async (req, res) => {
         try {
                 const { id } = req.params;
 
-                // Exclusão da marca
+        
                 const marcaExcluida = await marcaModel.deleteMarca(id);
 
                 if (!marcaExcluida) {

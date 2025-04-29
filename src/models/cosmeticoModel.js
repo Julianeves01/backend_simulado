@@ -33,7 +33,7 @@ const createCosmetico = async ({ nome, preco, marca_id }) => {
     `;
     const values = [nome, preco, marca_id];
     const result = await pool.query(query, values);
-    return result.rows[0]; // Retorna o cosmético criado
+    return result.rows[0]; 
 };
 
 const updateCosmetico = async (id, { nome, preco, marca_id }) => {
@@ -45,7 +45,7 @@ const updateCosmetico = async (id, { nome, preco, marca_id }) => {
     `;
     const values = [nome, preco, marca_id, id];
     const result = await pool.query(query, values);
-    return result.rows[0]; // Retorna o cosmético atualizado
+    return result.rows[0]; 
 };
 
 const deleteCosmetico = async (id) => {
@@ -55,7 +55,7 @@ const deleteCosmetico = async (id) => {
         RETURNING *;
     `;
     const result = await pool.query(query, [id]);
-    return result.rows[0]; // Retorna o cosmético excluído (se existir)
+    return result.rows[0]; 
 };
 
 module.exports = { getCosmeticos, getCosmeticoById, createCosmetico, updateCosmetico, deleteCosmetico };

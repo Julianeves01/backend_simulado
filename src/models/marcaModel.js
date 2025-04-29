@@ -3,13 +3,13 @@ const pool = require("../config/database");
 const getMarcas = async () => {
     const query = `SELECT * FROM marcas`;
     const result = await pool.query(query);
-    return result.rows; // Retorna todas as marcas
+    return result.rows; 
 };
 
 const getMarcaById = async (id) => {
     const query = `SELECT * FROM marcas WHERE id = $1`;
     const result = await pool.query(query, [id]);
-    return result.rows[0]; // Retorna a marca correspondente ao ID
+    return result.rows[0];
 };
 
 const createMarca = async ({ nome, pais_origem }) => {
@@ -20,7 +20,7 @@ const createMarca = async ({ nome, pais_origem }) => {
     `;
     const values = [nome, pais_origem];
     const result = await pool.query(query, values);
-    return result.rows[0]; // Retorna a marca criada
+    return result.rows[0]; 
 };
 
 const updateMarca = async (id, { nome, pais_origem }) => {
@@ -32,7 +32,7 @@ const updateMarca = async (id, { nome, pais_origem }) => {
     `;
     const values = [nome, pais_origem, id];
     const result = await pool.query(query, values);
-    return result.rows[0]; // Retorna a marca atualizada
+    return result.rows[0]; 
 };
 
 const deleteMarca = async (id) => {
@@ -42,7 +42,7 @@ const deleteMarca = async (id) => {
         RETURNING *;
     `;
     const result = await pool.query(query, [id]);
-    return result.rows[0]; // Retorna a marca excluída (se existir)
+    return result.rows[0]; 
 };
 
 module.exports = { createMarca, getMarcas, getMarcaById, updateMarca, deleteMarca };

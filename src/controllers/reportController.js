@@ -18,9 +18,9 @@ const generatePdfReport = (res, data, title) => {
         doc.fontSize(18).text(title, { align: "center" });
         doc.moveDown();
 
-        // Adiciona os dados ao relatório
+    
         data.forEach((item, index) => {
-            // Garante que o item seja um objeto válido
+            
             if (typeof item === "string") {
                 try {
                     item = JSON.parse(item);
@@ -40,7 +40,7 @@ const generatePdfReport = (res, data, title) => {
 
         doc.end();
 
-        // Tratamento de erros no fluxo do PDF
+
         doc.on('error', (err) => {
             console.error("Erro ao gerar PDF:", err);
             if (!res.headersSent) {
